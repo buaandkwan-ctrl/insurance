@@ -36,25 +36,21 @@ var sitemapConfig = {
     {
       name: "product-detail",
       isMatch: function() { return dl().page && dl().page.type === "product-detail"; },
-      interaction: {
-        name: "View Product Detail",
-        itemAction: SalesforceInteractions.CatalogObjectInteractionName.ViewCatalogObject,
-        catalog: {
-          Product: [
-            {
-              id: function() { return dl().product && dl().product.code; },
-              attributes: {
-                name:          function() { return dl().product && dl().product.name; },
-                category:      function() { return dl().product && dl().product.category; },
-                taxDeductible: function() { return dl().product && dl().product.taxDeductible; },
-                hasPromo:      function() { return dl().product && dl().product.hasPromo; }
-              }
-            }
-          ]
-        }
-      },
+      interaction: { name: "View Product Detail" },
       contentZones: [{ name: "product_reco" }],
-      user: { id: function() { return getAnonId(); } }
+      user: { id: function() { return getAnonId(); } },
+      catalog: {
+        Product: {
+          isMatch: function() { return !!dl().product; },
+          id: function() { return dl().product.code; },
+          attributes: {
+            name:          function() { return dl().product.name; },
+            category:      function() { return dl().product.category; },
+            taxDeductible: function() { return dl().product.taxDeductible; },
+            hasPromo:      function() { return dl().product.hasPromo; }
+          }
+        }
+      }
     },
     {
       name: "calculator",

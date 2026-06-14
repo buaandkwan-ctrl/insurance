@@ -120,15 +120,7 @@
       dl.form.step     = n;
       dl.form.stepName = stepName;
 
-      sendInteraction('Form Step', {
-        attributes: {
-          step:     n,
-          stepName: stepName,
-          productCode: (dl.product && dl.product.code) ? dl.product.code : (dl.page && dl.page.code) || ''
-        }
-      });
-
-      // Reinit so Salesforce Interactions re-evaluates the sitemap
+      // Reinit so sitemap re-evaluates and fires "View Application Step" with updated step data
       try {
         if (
           typeof window.SalesforceInteractions !== 'undefined' &&

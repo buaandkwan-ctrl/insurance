@@ -23,9 +23,8 @@ var blaSitemap = {
     ],
     onActionEvent: function(evt) { return evt; },
     user: {
-      id: function() { return window._evaUserID || getAnonId(); },
-      attributes: {
-        customerId: function() { return window._evaUserID || getAnonId(); }
+      identities: {
+        customerId: function() { return getAnonId(); }
       }
     }
   },
@@ -100,8 +99,7 @@ function getAnonId() {
 }
 
 SalesforceInteractions.init({
-  cookieDomain: "github.io"   // local cross-domain test: เปลี่ยนเป็น ".local"
+  cookieDomain: "github.io"
 }).then(function() {
-  SalesforceInteractions.setUser({ userId: getAnonId() });
   SalesforceInteractions.initSitemap(blaSitemap);
 });

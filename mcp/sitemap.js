@@ -97,7 +97,8 @@ function getAnonId() {
 }
 
 SalesforceInteractions.init({
-  cookieDomain: "github.io"
+  cookieDomain: "buaandkwan-ctrl.github.io",
+  debug: true
 }).then(function() {
   SalesforceInteractions.initSitemap(blaSitemap);
 });

@@ -1,10 +1,10 @@
 function dl() { return window.blaDataLayer || {}; }
 
 function getAnonId() {
-  var id = localStorage.getItem("bla_anon_id");
+  var id = sessionStorage.getItem("bla_anon_id");
   if (!id) {
     id = "anon_" + Math.random().toString(36).substr(2, 9) + "_" + Date.now();
-    localStorage.setItem("bla_anon_id", id);
+    sessionStorage.setItem("bla_anon_id", id);
   }
   return id;
 }

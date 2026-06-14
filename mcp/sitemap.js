@@ -50,7 +50,6 @@ var sitemapConfig = {
 };
 
 SalesforceInteractions.init({
-  cookieDomain: "buaandkwan-ctrl.github.io",
   debug: true
 }).then(function() {
   SalesforceInteractions.initSitemap(sitemapConfig);

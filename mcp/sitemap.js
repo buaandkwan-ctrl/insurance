@@ -23,7 +23,7 @@ var blaSitemap = {
     ],
     onActionEvent: function(evt) { return evt; },
     user: {
-      id: function() { return getAnonId(); }
+      id: function() { return window._evaUserID || getAnonId(); }
     }
   },
 

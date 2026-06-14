@@ -140,7 +140,9 @@
 
   // Fire purchase tracking event on page load
   window.addEventListener("DOMContentLoaded", function () {
-    window.blaTrack.purchase({ code: code, value: value });
+    setTimeout(function() {
+      window.blaTrack.purchase({ code: code, value: value });
+    }, 1500);
   });
 }());
 </script>

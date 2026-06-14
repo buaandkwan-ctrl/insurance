@@ -1,169 +1,200 @@
-# BLA Mock Funnel — MCP Tracking Demo
+# BLA Insurance Mock Funnel — README
 
-เว็บ static จำลองโครงสร้าง funnel ของ Bangkok Life Assurance เพื่อทดสอบ **MCP (Salesforce Interactions) Sitemap + Campaign + Cross-domain Tracking** ก่อนนำไปใช้กับเว็บจริง
-
-> ⚠️ **MOCK ONLY** — ไม่ใช่เว็บจริง ใช้สำหรับทดสอบ tracking เท่านั้น
-
----
-
-## โครงสร้างหน้า (Funnel)
-
-| # | หน้า | Path | pageType |
-|---|---|---|---|
-| 1 | Listing / Home | `/index.html` | `home` |
-| 2 | Product Detail | `/product.html?code=smartsaving101` | `product-detail` |
-| 3 | Calculator | `/calculator.html?code=smartsaving101` | `calculator` |
-| 4 | Application Form (SPA 5 step) | `/smartinsure/form.html` | `application` |
-| 5 | Confirmation | `/smartinsure/confirmation.html` | `confirmation` |
+> **MOCK / DEMO PROJECT**
+> โปรเจกต์นี้เป็นระบบสาธิต (mock funnel) สำหรับทดสอบ Salesforce Interactions (MCP) Tracking บนเว็บไซต์ประกันชีวิต Bangkok Life Assurance
+> ไม่มีการเก็บข้อมูลจริง ไม่มีการชำระเงินจริง และไม่ใช่เว็บไซต์ทางการของ BLA
 
 ---
 
-## วิธีรันแบบ Single Origin (GitHub Pages / Local demo)
+## 1. ภาพรวมโปรเจกต์ (Project Overview)
+
+```
+insurance/
+├── index.html                 # หน้าแสดงผลิตภัณฑ์ 6 รายการ
+├── product.html               # หน้ารายละเอียดผลิตภัณฑ์ (dynamic via ?code=)
+├── calculator.html            # หน้าคำนวณเบี้ยประกัน
+├── smartinsure/
+│   ├── form.html              # SPA 5-step ใบสมัครประกัน
+│   └── confirmation.html      # หน้ายืนยันการสมัคร
+├── assets/
+│   ├── datalayer.js           # window.blaDataLayer + window.blaTrack helpers
+│   └── styles.css             # BLA brand styles (dark blue #003087, gold #C8A84B)
+├── mcp/
+│   └── sitemap.js             # MCP Sitemap config (วางใน Salesforce Interactions UI)
+└── README.md
+```
+
+### DataLayer Flow
+| หน้า | `blaDataLayer.page.type` | Event ที่ยิง |
+|------|--------------------------|-------------|
+| index.html | `"home"` | View Home (จาก beacon/sitemap) |
+| product.html | `"product-detail"` | View Product Detail + catalog object |
+| calculator.html | `"calculator"` | View Calculator → Calculate Premium → Click Buy Online |
+| smartinsure/form.html | `"application"` | Form Step (ทุก step) + reinit() |
+| smartinsure/confirmation.html | `"confirmation"` | Purchase |
+
+---
+
+## 2. รันบน Single Origin (วิธีง่าย)
 
 ```bash
-# รันจาก root ของ project
+cd /path/to/insurance
 python3 -m http.server 8080
-
-# เปิดเบราว์เซอร์ที่:
-# http://localhost:8080/
 ```
+
+เปิด browser: [http://localhost:8080](http://localhost:8080)
 
 ---
 
-## วิธีรันแบบ 2 Origin (ทดสอบ Cross-domain จริง)
+## 3. รันแบบ 2 Origin (Cross-Domain Test)
 
-### 1. ตั้งค่า /etc/hosts
+ใช้เพื่อทดสอบ cross-domain cookie sharing ของ Salesforce Interactions
 
-```bash
-sudo nano /etc/hosts
+### 3.1 เพิ่ม /etc/hosts
 
-# เพิ่มบรรทัดนี้:
-127.0.0.1    main.local
-127.0.0.1    form.local
+```
+127.0.0.1   main.local
+127.0.0.1   form.local
 ```
 
-### 2. รัน main site (port 8080)
+### 3.2 รัน Main Site
 
 ```bash
-# รันจาก root ของ project
+cd /path/to/insurance
 python3 -m http.server 8080
-
-# เข้าถึงได้ที่: http://main.local:8080/
+# เข้าถึงที่: http://main.local:8080
 ```
 
-### 3. รัน form site (port 8081)
+### 3.3 Copy และรัน SmartInsure (แยก origin)
 
 ```bash
-# สร้าง folder แยก แล้วคัดลอก smartinsure/ และ assets/ เข้าไป
-mkdir -p /tmp/bla-form
-cp -r smartinsure/ /tmp/bla-form/
-cp -r assets/ /tmp/bla-form/
-
-# แก้ path ใน form.html และ confirmation.html ให้ชี้ไป assets/ แทน ../assets/
-# (หรือ symlink)
-
-cd /tmp/bla-form
+cp -r smartinsure /tmp/smartinsure-standalone
+cd /tmp/smartinsure-standalone
 python3 -m http.server 8081
-
-# เข้าถึงได้ที่: http://form.local:8081/smartinsure/form.html
+# เข้าถึงที่: http://form.local:8081
 ```
 
-### 4. ตั้งค่า MCP cookieDomain
+> **หมายเหตุ:** ต้องอัพเดต URL ใน calculator.html ให้ชี้ไปที่ `http://form.local:8081/form.html?...` แทน relative path
+
+### 3.4 อัพเดต MCP cookieDomain
 
 ใน `mcp/sitemap.js` เปลี่ยน:
-
 ```js
-// Production
-cookieDomain: "bangkoklife.com"
-
-// Local 2-origin testing (ใช้ parent domain ของ main.local + form.local)
-cookieDomain: "local"
-// หรือถ้า hostname เป็น sub.bangkoklife.com.local ใช้:
-cookieDomain: ".bangkoklife.com.local"
-```
-
-### 5. Cross-domain handoff ผ่าน URL param
-
-เมื่อกดปุ่ม "ซื้อออนไลน์" บนหน้า calculator จะ redirect พร้อม param:
-
-```
-http://form.local:8081/smartinsure/form.html?vid={MCP_visitor_id}&code=smartsaving101&premiumBand=mid&plan=standard&premium=24800
+SalesforceInteractions.init({
+  cookieDomain: ".local"   // ← เปลี่ยนจาก "bangkoklife.com"
+})
 ```
 
 ---
 
-## Deploy บน GitHub Pages
+## 4. Deploy บน GitHub Pages
 
-1. Push code ขึ้น GitHub repository
-2. ไปที่ Settings → Pages → Source: Deploy from branch `main` (หรือ branch ที่ต้องการ)
-3. เข้าถึงได้ที่: `https://{username}.github.io/{repo-name}/`
+```bash
+# Push to GitHub
+git add .
+git commit -m "feat: BLA mock funnel"
+git push origin main
+
+# ใน GitHub repo: Settings → Pages → Source: Deploy from branch → main → / (root)
+# URL จะเป็น: https://<username>.github.io/<repo-name>/
+```
+
+> **หมายเหตุ:** GitHub Pages ใช้ single domain ดังนั้นไม่รองรับ cross-domain test (ใช้ single origin mode)
 
 ---
 
-## วิธีเชื่อม MCP (Salesforce Interactions)
+## 5. ตั้งค่า MCP (Salesforce Interactions)
 
-### 1. วาง Beacon Script
+### 5.1 เพิ่ม Beacon Script
 
-แทน placeholder comment ในทุกหน้า HTML:
+วาง beacon script tag ของ Salesforce Interactions **ก่อน** `</head>` ในทุกหน้า
+(ค้นหา comment `<!-- MCP Beacon: วาง Salesforce Interactions beacon script ที่นี่ -->`)
 
 ```html
-<!-- MCP Beacon: วาง Salesforce Interactions beacon script ที่นี่ -->
-<!-- <script src="https://YOUR_BEACON_URL/beacon.js"></script> -->
+<!-- แทนที่ YOUR_BEACON_URL ด้วย URL จาก Salesforce Interactions account จริง -->
+<script src="https://YOUR_BEACON_URL/beacon.js"></script>
 ```
 
-ด้วย beacon จริงจาก Salesforce Interactions account ของคุณ:
+### 5.2 ตั้งค่า Dataset
 
-```html
-<script src="https://cdn.evgnet.com/beacon/YOUR_ORG/YOUR_DATASET/scripts/evergage.min.js"></script>
-```
+ใน Salesforce Interactions:
+1. ไปที่ **Setup → Interaction Studio → Datasets**
+2. สร้าง dataset สำหรับ BLA
+3. Copy beacon URL และวางในทุก HTML page
 
-### 2. วาง Sitemap ใน MCP UI
+### 5.3 Upload Sitemap
 
-นำ config จากไฟล์ `mcp/sitemap.js` ไปวางใน **Salesforce Interactions → Sitemap** พร้อมเติม:
-- `cookieDomain`: domain จริงของเว็บ (เช่น `bangkoklife.com`)
-- Dataset / Beacon URL จาก account
+1. Copy เนื้อหาจาก `mcp/sitemap.js`
+2. ไปที่ Salesforce Interactions → **Sitemap**
+3. วาง code และแทนที่ `"bangkoklife.com"` ด้วย domain จริง
+4. Save & Publish
 
-### 3. สร้าง Catalog "Product" ใน MCP
+### 5.4 ตั้งค่า Content Zones
 
-Sitemap จะส่ง catalog item อัตโนมัติเมื่อ `pageType = "product-detail"` — ต้องสร้าง Catalog object ชื่อ `Product` ใน MCP ก่อน
+สร้าง content zones ต่อไปนี้ใน Salesforce Interactions:
+- `home_hero` — hero banner บนหน้าหลัก
+- `product_reco` — product recommendations บนหน้า product detail
+- `calculator_nudge` — nudge/CTA บนหน้า calculator
 
 ---
 
-## Test Checklist
+## 6. Test Checklist
 
-- [ ] ทุกหน้า fire page view ตรง pageType (ดูใน MCP → Real-time → Activity)
-- [ ] หน้า product-detail สร้าง catalog item view (เห็น product code ใน MCP Catalog)
-- [ ] `Calculate Premium` fire พร้อม attributes: gender, ageBand, premiumBand, productCode
-- [ ] `Click Buy Online` fire ก่อน redirect + URL มี `vid` param
-- [ ] ฟอร์ม fire `Form Step` ครบ step 1→5 (พิสูจน์ virtual pageview ด้วย `reinit()`)
-- [ ] `Purchase` fire บนหน้า confirmation พร้อม orderValue
-- [ ] (local 2-origin) visitor ID เดียวกันต่อเนื่องข้าม origin
-- [ ] Funnel report ใน MCP เห็น drop-off ครบทุก step
+### หน้าหลัก (index.html)
+- [ ] `window.blaDataLayer.page.type === "home"` ก่อน beacon โหลด
+- [ ] แสดงการ์ดผลิตภัณฑ์ 6 รายการครบ
+- [ ] กดการ์ดแต่ละใบ → ไปที่ `product.html?code=<code>` ถูกต้อง
+- [ ] Console แสดง `[blaDataLayer] Initialized: {page: {type: "home", locale: "th"}}`
+
+### หน้ารายละเอียด (product.html)
+- [ ] `blaDataLayer.product.code` ตรงกับ URL param `?code=`
+- [ ] `blaDataLayer.page.type === "product-detail"`
+- [ ] แสดงชื่อ category badge และ tax/promo badges ถูกต้อง
+- [ ] ปุ่ม "คำนวณเบี้ยประกัน" → ไปที่ `calculator.html?code=<code>`
+
+### หน้าคำนวณ (calculator.html)
+- [ ] `blaDataLayer.page.type === "calculator"`
+- [ ] กด "คำนวณ" ก่อนเลือกข้อมูล → แสดง alert ขอให้กรอก
+- [ ] เลือก gender + age band + plan → กดคำนวณ → แสดงเบี้ยประมาณ
+- [ ] `blaTrack.calculate(...)` ยิง event (ดูใน console)
+- [ ] `blaDataLayer.calc.premiumBand` อัพเดตหลังคำนวณ
+- [ ] ปุ่ม "ซื้อออนไลน์" → `blaTrack.buyClick(...)` ยิง event → redirect ไป form.html
+- [ ] URL ของ form.html มี `vid`, `code`, `premiumBand`, `plan`, `premium` params
+
+### หน้าใบสมัคร (smartinsure/form.html)
+- [ ] `blaDataLayer.page.type === "application"`
+- [ ] `blaDataLayer.form.step === 1` ตอนโหลด
+- [ ] Step indicator แสดงขั้นตอนปัจจุบันถูกต้อง
+- [ ] กด "ต่อไป" → `blaTrack.formStep(n, stepName)` ยิง event
+- [ ] `blaDataLayer.form.step` อัพเดตทุก step
+- [ ] `SalesforceInteractions.reinit()` ถูกเรียก (หรือ log ถ้าไม่ได้โหลด beacon)
+- [ ] Step 4 (review) แสดงข้อมูลผลิตภัณฑ์จาก URL params
+- [ ] Step 5 (payment) แสดงยอดรวมพร้อม VAT
+- [ ] กด "ยืนยัน" → redirect ไป `confirmation.html?code=...&value=...`
+
+### หน้ายืนยัน (smartinsure/confirmation.html)
+- [ ] `blaDataLayer.page.type === "confirmation"`
+- [ ] `blaDataLayer.order.confirmed === true`
+- [ ] `blaTrack.purchase({code, value})` ยิงทันทีที่หน้าโหลด
+- [ ] แสดงหมายเลขคำขอ (mock), ชื่อผลิตภัณฑ์, มูลค่าเบี้ย, วันที่
+
+### Cross-Domain (ถ้าทดสอบ 2 origin)
+- [ ] Cookie จาก `main.local` อ่านได้จาก `form.local` (ผ่าน MCP parent domain)
+- [ ] `blaTrack.formStep()` ส่ง user identity ข้าม domain ได้
 
 ---
 
-## สินค้า Mock Catalog
+## 7. ข้อมูล Mock Products
 
-| code | ชื่อ | category | ลดหย่อนภาษี | โปรโมชัน |
-|---|---|---|---|---|
+| Code | ชื่อ | หมวด | ลดหย่อนภาษี | โปรโมชัน |
+|------|------|------|:-----------:|:--------:|
 | smartsaving101 | BLA SmartSaving 10/1 | savings | ✓ | ✓ |
-| smartsaving102 | BLA SmartSaving 10/2 | savings | ✓ | - |
-| completehealth | BLA Complete Health | health | - | ✓ |
-| fastreturn102 | BLA Fast Return 10/2 | savings | ✓ | - |
+| smartsaving102 | BLA SmartSaving 10/2 | savings | ✓ | — |
+| completehealth | BLA Complete Health | health | — | ✓ |
+| fastreturn102 | BLA Fast Return 10/2 | savings | ✓ | — |
 | happypension | BLA Happy Pension | pension | ✓ | ✓ |
-| smartreturn105 | BLA Smart Return 10/5 | savings | - | - |
+| smartreturn105 | BLA Smart Return 10/5 | savings | — | — |
 
 ---
 
-## สิ่งที่ต้องทำใน MCP UI เอง (หลัง deploy)
-
-1. วาง sitemap.js + เติม beacon/dataset
-2. สร้าง **Catalog "Product"** (รับ catalog block จาก sitemap)
-3. สร้าง **Segment**: เช่น "calculated-not-bought", "viewed-savings"
-4. สร้าง **Campaign + Experience (A/B)**: เช่น sticky CTA บน calculator zone `calculator_nudge`
-5. ตั้ง **Goal** = action `Purchase` (business goal) หรือ `Calculate Premium` (micro goal)
-6. ดู **Funnel report**: View Product Detail → Calculate Premium → Click Buy Online → View Application Step → Purchase
-
----
-
-*Mock build สำหรับทดสอบ MCP tracking เท่านั้น — ไม่มีข้อมูลจริงหรือ backend*
+*สร้างเพื่อการสาธิต MCP Tracking — Bangkok Life Assurance Demo Funnel*

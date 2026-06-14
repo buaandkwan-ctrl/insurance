@@ -24,6 +24,12 @@ var blaSitemap = {
     onActionEvent: function(evt) { return evt; }
   },
 
+  pageTypeDefault: {
+    name: "default",
+    interaction: { name: "View Page" },
+    user: { id: function() { return getAnonId(); } }
+  },
+
   pageTypes: [
     {
       name: "home",

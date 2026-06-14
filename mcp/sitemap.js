@@ -6,93 +6,86 @@
 //
 // วิธีใช้:
 //   1. Copy โค้ดนี้ทั้งหมด
-//   2. ใส่ใน Salesforce Interactions > Sitemap Editor
+//   2. ใส่ใน Salesforce Interactions > Web > Site-Wide JavaScript
 //   3. แทนที่ "bangkoklife.com" ด้วย parent domain จริง
-//      (local test: ใช้ ".local" ถ้าตั้ง /etc/hosts ตาม README)
+//      (GitHub Pages ใช้ "github.io")
 //   4. Save & Publish
 // ============================================================
 
 function dl() { return window.blaDataLayer || {}; }
 
-const blaSitemap = {
+var blaSitemap = {
   global: {
     contentZones: [
       { name: "home_hero" },
       { name: "product_reco" },
       { name: "calculator_nudge" }
     ],
-    onActionEvent: (evt) => evt
+    onActionEvent: function(evt) { return evt; }
   },
 
   pageTypes: [
-    // ── หน้าหลัก (Product Listing) ────────────────────────────────────────
     {
       name: "home",
-      isMatch: () => dl().page?.type === "home",
+      isMatch: function() { return dl().page && dl().page.type === "home"; },
       interaction: { name: "View Home" },
       contentZones: [{ name: "home_hero" }]
     },
 
-    // ── หน้ารายละเอียดผลิตภัณฑ์ ──────────────────────────────────────────
     {
       name: "product-detail",
-      isMatch: () => dl().page?.type === "product-detail",
+      isMatch: function() { return dl().page && dl().page.type === "product-detail"; },
       interaction: { name: "View Product Detail" },
       contentZones: [{ name: "product_reco" }],
       catalog: {
         Product: {
-          isMatch: () => !!dl().product,
-          id:      () => dl().product.code,
+          isMatch: function() { return !!dl().product; },
+          id:      function() { return dl().product.code; },
           attributes: {
-            name:          () => dl().product.name,
-            category:      () => dl().product.category,
-            taxDeductible: () => dl().product.taxDeductible,
-            hasPromo:      () => dl().product.hasPromo
+            name:          function() { return dl().product.name; },
+            category:      function() { return dl().product.category; },
+            taxDeductible: function() { return dl().product.taxDeductible; },
+            hasPromo:      function() { return dl().product.hasPromo; }
           }
         }
       }
     },
 
-    // ── หน้าคำนวณเบี้ย ────────────────────────────────────────────────────
     {
       name: "calculator",
-      isMatch: () => dl().page?.type === "calculator",
+      isMatch: function() { return dl().page && dl().page.type === "calculator"; },
       interaction: { name: "View Calculator" },
       contentZones: [{ name: "calculator_nudge" }]
     },
 
-    // ── หน้ากรอกใบสมัคร (SPA — step อัพเดตผ่าน blaTrack.formStep) ────────
     {
       name: "application",
-      isMatch: () => dl().page?.type === "application",
+      isMatch: function() { return dl().page && dl().page.type === "application"; },
       interaction: {
         name: "View Application Step",
-        // ค่า step จะถูก override ทุกครั้งที่ blaTrack.formStep() เรียก reinit()
         attributes: {
-          step:     () => dl().form?.step     || 1,
-          stepName: () => dl().form?.stepName || "personal"
+          step:     function() { return (dl().form && dl().form.step)     || 1; },
+          stepName: function() { return (dl().form && dl().form.stepName) || "personal"; }
         }
       }
     },
 
-    // ── หน้ายืนยันการซื้อ ────────────────────────────────────────────────
     {
       name: "confirmation",
-      isMatch: () => dl().page?.type === "confirmation",
+      isMatch: function() { return dl().page && dl().page.type === "confirmation"; },
       interaction: {
         name: "Purchase",
         attributes: {
-          orderConfirmed: () => dl().order?.confirmed || false,
-          orderValue:     () => dl().order?.value     || 0
+          orderConfirmed: function() { return (dl().order && dl().order.confirmed) || false; },
+          orderValue:     function() { return (dl().order && dl().order.value)     || 0; }
         }
       }
     }
   ]
 };
 
-// ── Bootstrap Salesforce Interactions ────────────────────────────────────────
 SalesforceInteractions.init({
-  cookieDomain: "bangkoklife.com"   // local cross-domain test: เปลี่ยนเป็น ".local"
-}).then(() => {
+  cookieDomain: "github.io"   // local cross-domain test: เปลี่ยนเป็น ".local"
+}).then(function() {
   SalesforceInteractions.initSitemap(blaSitemap);
 });

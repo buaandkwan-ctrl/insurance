@@ -14,8 +14,7 @@ var sitemapConfig = {
     contentZones: [
       { name: "home_hero" },
       { name: "product_reco" },
-      { name: "calculator_nudge" },
-      { name: "global_slide_in" }
+      { name: "calculator_nudge" }
     ],
     onActionEvent: function(evt) { return evt; }
   },

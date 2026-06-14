@@ -23,16 +23,7 @@ var blaSitemap = {
     ],
     onActionEvent: function(evt) { return evt; },
     user: {
-      attributes: {
-        anonymousId: function() {
-          var id = localStorage.getItem("bla_anon_id");
-          if (!id) {
-            id = "anon_" + Math.random().toString(36).substr(2, 9) + "_" + Date.now();
-            localStorage.setItem("bla_anon_id", id);
-          }
-          return id;
-        }
-      }
+      id: function() { return getAnonId(); }
     }
   },
 
@@ -106,8 +97,7 @@ function getAnonId() {
 }
 
 SalesforceInteractions.init({
-  cookieDomain: "github.io",   // local cross-domain test: เปลี่ยนเป็น ".local"
-  userId: getAnonId()
+  cookieDomain: "github.io"   // local cross-domain test: เปลี่ยนเป็น ".local"
 }).then(function() {
   SalesforceInteractions.initSitemap(blaSitemap);
 });

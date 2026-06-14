@@ -138,12 +138,10 @@
     year: "numeric", month: "long", day: "numeric"
   });
 
-  // Fire purchase tracking event on page load
-  window.addEventListener("DOMContentLoaded", function () {
-    setTimeout(function() {
-      window.blaTrack.purchase({ code: code, value: value });
-    }, 1500);
-  });
+  // Fire purchase tracking — DOM is already ready (script at bottom of body)
+  setTimeout(function() {
+    window.blaTrack.purchase({ code: code, value: value });
+  }, 1500);
 }());
 </script>
 

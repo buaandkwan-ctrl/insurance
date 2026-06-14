@@ -21,13 +21,9 @@ var blaSitemap = {
       { name: "product_reco" },
       { name: "calculator_nudge" }
     ],
-    onActionEvent: function(evt) {
-      if (!evt.user) { evt.user = {}; }
-      if (!evt.user.identities) { evt.user.identities = {}; }
-      if (!evt.user.identities.customerId) {
-        evt.user.identities.customerId = getAnonId();
-      }
-      return evt;
+    onActionEvent: function(evt) { return evt; },
+    user: {
+      id: function() { return window._blaAnonId || getAnonId(); }
     }
   },
 

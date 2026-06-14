@@ -63,7 +63,10 @@ var sitemapConfig = {
       name: "application",
       isMatch: function() { return dl().page && dl().page.type === "application"; },
       interaction: {
-        name: "View Application Step",
+        name: function() {
+          var stepName = (dl().form && dl().form.stepName) || "personal";
+          return "View Step: " + stepName;
+        },
         attributes: {
           step:     function() { return (dl().form && dl().form.step)     || 1; },
           stepName: function() { return (dl().form && dl().form.stepName) || "personal"; }

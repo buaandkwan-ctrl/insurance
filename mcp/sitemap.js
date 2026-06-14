@@ -74,13 +74,7 @@ var sitemapConfig = {
     {
       name: "confirmation",
       isMatch: function() { return dl().page && dl().page.type === "confirmation"; },
-      interaction: {
-        name: "Order Confirmed",
-        attributes: {
-          orderConfirmed: function() { return (dl().order && dl().order.confirmed) || false; },
-          orderValue:     function() { return (dl().order && dl().order.value)     || 0; }
-        }
-      },
+      interaction: { name: "View Confirmation" },
       user: { id: function() { return getAnonId(); } }
     }
   ]

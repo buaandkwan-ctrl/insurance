@@ -149,6 +149,9 @@
      * @param {Object} d - { code, value }
      */
     purchase: function (d) {
+      if (window._blaPurchaseFired) { return; }
+      window._blaPurchaseFired = true;
+
       var dl = window.blaDataLayer;
       dl.order = dl.order || {};
       dl.order.confirmed = true;

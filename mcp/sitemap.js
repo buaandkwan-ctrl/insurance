@@ -31,7 +31,7 @@ var sitemapConfig = {
       name: "home",
       isMatch: function() { return dl().page && dl().page.type === "home"; },
       interaction: { name: "View Home" },
-      contentZones: [{ name: "home_hero" }],
+      contentZones: [{ name: "home_hero" }, { name: "global_slide_in" }],
       user: { id: function() { return getAnonId(); } }
     },
     {

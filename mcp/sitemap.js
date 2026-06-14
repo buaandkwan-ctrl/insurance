@@ -21,11 +21,13 @@ var blaSitemap = {
       { name: "product_reco" },
       { name: "calculator_nudge" }
     ],
-    onActionEvent: function(evt) { return evt; },
-    user: {
-      identities: {
-        customerId: function() { return getAnonId(); }
+    onActionEvent: function(evt) {
+      if (!evt.user) { evt.user = {}; }
+      if (!evt.user.identities) { evt.user.identities = {}; }
+      if (!evt.user.identities.customerId) {
+        evt.user.identities.customerId = getAnonId();
       }
+      return evt;
     }
   },
 

@@ -21,7 +21,19 @@ var blaSitemap = {
       { name: "product_reco" },
       { name: "calculator_nudge" }
     ],
-    onActionEvent: function(evt) { return evt; }
+    onActionEvent: function(evt) { return evt; },
+    user: {
+      attributes: {
+        anonymousId: function() {
+          var id = localStorage.getItem("bla_anon_id");
+          if (!id) {
+            id = "anon_" + Math.random().toString(36).substr(2, 9) + "_" + Date.now();
+            localStorage.setItem("bla_anon_id", id);
+          }
+          return id;
+        }
+      }
+    }
   },
 
   pageTypes: [
@@ -84,8 +96,18 @@ var blaSitemap = {
   ]
 };
 
+function getAnonId() {
+  var id = localStorage.getItem("bla_anon_id");
+  if (!id) {
+    id = "anon_" + Math.random().toString(36).substr(2, 9) + "_" + Date.now();
+    localStorage.setItem("bla_anon_id", id);
+  }
+  return id;
+}
+
 SalesforceInteractions.init({
-  cookieDomain: "github.io"   // local cross-domain test: เปลี่ยนเป็น ".local"
+  cookieDomain: "github.io",   // local cross-domain test: เปลี่ยนเป็น ".local"
+  userId: getAnonId()
 }).then(function() {
   SalesforceInteractions.initSitemap(blaSitemap);
 });

@@ -154,7 +154,7 @@
       dl.order.confirmed = true;
       dl.order.value     = d.value || 0;
 
-      sendInteraction('Purchase', {
+      sendInteraction('Order Confirmed', {
         catalog: {
           Product: {
             id: d.code || ''

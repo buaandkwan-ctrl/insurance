@@ -23,7 +23,10 @@ var blaSitemap = {
     ],
     onActionEvent: function(evt) { return evt; },
     user: {
-      id: function() { return window._evaUserID || getAnonId(); }
+      id: function() { return window._evaUserID || getAnonId(); },
+      attributes: {
+        customerId: function() { return window._evaUserID || getAnonId(); }
+      }
     }
   },
 

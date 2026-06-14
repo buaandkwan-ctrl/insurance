@@ -102,5 +102,6 @@ function getAnonId() {
 SalesforceInteractions.init({
   cookieDomain: "github.io"   // local cross-domain test: เปลี่ยนเป็น ".local"
 }).then(function() {
+  SalesforceInteractions.setUser({ userId: getAnonId() });
   SalesforceInteractions.initSitemap(blaSitemap);
 });

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>รายละเอียดผลิตภัณฑ์ — Bangkok Life Assurance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+  <script>
+    // ─── DataLayer: set BEFORE beacon loads ───────────────────────────────────
+    (function() {
+      var params = new URLSearchParams(location.search);
+      var code   = params.get("code") || "smartsaving101";
+      var CATALOG = {
+        smartsaving101: { name: "BLA SmartSaving 10/1",   category: "savings", taxDeductible: true,  hasPromo: true  },
+        smartsaving102: { name: "BLA SmartSaving 10/2",   category: "savings", taxDeductible: true,  hasPromo: false },
+        completehealth: { name: "BLA Complete Health",     category: "health",  taxDeductible: false, hasPromo: true  },
+        fastreturn102:  { name: "BLA Fast Return 10/2",    category: "savings", taxDeductible: true,  hasPromo: false },
+        happypension:   { name: "BLA Happy Pension",       category: "pension", taxDeductible: true,  hasPromo: true  },
+        smartreturn105: { name: "BLA Smart Return 10/5",   category: "savings", taxDeductible: false, hasPromo: false }
+      };
+      var p = CATALOG[code] || CATALOG["smartsaving101"];
+      window.blaDataLayer = {
+        page:    { type: "product-detail", locale: "th" },
+        product: { code: code, name: p.name, category: p.category, taxDeductible: p.taxDeductible, hasPromo: p.hasPromo }
+      };
+    })();
+  </script>
+  <!-- MCP Beacon: วาง Salesforce Interactions beacon script ที่นี่ -->
+  <!-- <script src="https://YOUR_BEACON_URL/beacon.js"></script> -->
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="logo" href="index.html">
+      <div class="logo-mark">B</div>
+      <div>
+        <span class="logo-text">Bangkok Life</span>
+        <span class="logo-sub">Bangkok Life Assurance</span>
+      </div>
+    </a>
+    <nav>
+      <a href="index.html">ผลิตภัณฑ์</a>
+      <a href="#">เกี่ยวกับเรา</a>
+      <a href="#">ติดต่อ</a>
+    </nav>
+  </div>
+</header>
+
+<!-- MCP content zone: product_reco -->
+<div id="mcp-product_reco" data-mcp-zone="product_reco"></div>
+
+<main class="page-content">
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="index.html">หน้าหลัก</a>
+      <span>›</span>
+      <span id="bc-name">รายละเอียดผลิตภัณฑ์</span>
+    </div>
+
+    <div class="product-detail-card" id="detail-card">
+      <!-- Rendered by JS -->
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <p>© 2024 Bangkok Life Assurance PCL.</p>
+  <p class="mt-8" style="font-size:11px;opacity:0.6;">[MOCK — BLA Funnel Demo สำหรับทดสอบ MCP Tracking เท่านั้น]</p>
+</footer>
+
+<script src="assets/datalayer.js"></script>
+<script>
+  var CATALOG_DETAIL = {
+    smartsaving101: {
+      name: "BLA SmartSaving 10/1",
+      category: "savings",
+      taxDeductible: true,
+      hasPromo: true,
+      benefits: [
+        { label: "ระยะคุ้มครอง",     value: "10 ปี" },
+        { label: "ระยะชำระเบี้ย",    value: "10 ปี" },
+        { label: "ทุนประกัน",         value: "500,000 – 10,000,000 บาท" },
+        { label: "เงินคืนระหว่างสัญญา", value: "5% ต่อปี ทุกปี" },
+        { label: "เงินครบสัญญา",      value: "100% ของทุนประกัน" },
+        { label: "ผลตอบแทนรวม",       value: "สูงถึง 150% IRR ~2.5%" }
+      ],
+      desc: "ออมทรัพย์พร้อมคุ้มครองชีวิต รับเงินคืนทุกปีและเงินก้อนเมื่อครบสัญญา เหมาะสำหรับผู้ที่ต้องการวางแผนการเงินระยะกลาง"
+    },
+    smartsaving102: {
+      name: "BLA SmartSaving 10/2",
+      category: "savings",
+      taxDeductible: true,
+      hasPromo: false,
+      benefits: [
+        { label: "ระยะคุ้มครอง",  value: "10 ปี" },
+        { label: "ระยะชำระเบี้ย", value: "10 ปี" },
+        { label: "ทุนประกัน",      value: "500,000 – 10,000,000 บาท" },
+        { label: "เงินคืนระหว่างสัญญา", value: "3% ปี 1-9, 103% ปีที่ 10" },
+        { label: "ผลตอบแทนรวม",    value: "130% IRR ~2.0%" }
+      ],
+      desc: "แผนออมทรัพย์ที่เน้นรับเงินก้อนใหญ่ตอนครบสัญญา เหมาะสำหรับผู้ที่วางแผนเก็บเงินระยะยาว"
+    },
+    completehealth: {
+      name: "BLA Complete Health",
+      category: "health",
+      taxDeductible: false,
+      hasPromo: true,
+      benefits: [
+        { label: "ค่าห้องผู้ป่วยใน",    value: "สูงสุด 10,000 บาท/คืน" },
+        { label: "ค่ารักษาพยาบาล",      value: "สูงสุด 2,000,000 บาท/ปี" },
+        { label: "โรคร้ายแรง",           value: "คุ้มครอง 50+ โรค" },
+        { label: "ค่าผ่าตัด",            value: "สูงสุด 500,000 บาท" },
+        { label: "ICU",                   value: "สูงสุด 20,000 บาท/คืน" }
+      ],
+      desc: "ประกันสุขภาพครบวงจร ครอบคลุมทั้งผู้ป่วยในและผู้ป่วยนอก พร้อมความคุ้มครองโรคร้ายแรง"
+    },
+    fastreturn102: {
+      name: "BLA Fast Return 10/2",
+      category: "savings",
+      taxDeductible: true,
+      hasPromo: false,
+      benefits: [
+        { label: "ระยะคุ้มครอง",        value: "10 ปี" },
+        { label: "ระยะชำระเบี้ย",       value: "2 ปี" },
+        { label: "เงินคืน",              value: "เริ่มรับตั้งแต่ปีที่ 1" },
+        { label: "ทุนประกัน",            value: "200% เมื่อเสียชีวิต" },
+        { label: "ผลตอบแทนรวม",          value: "130% IRR ~2.3%" }
+      ],
+      desc: "จ่ายเบี้ยแค่ 2 ปี รับเงินคืนเร็ว เหมาะสำหรับผู้ที่ต้องการสภาพคล่องสูง"
+    },
+    happypension: {
+      name: "BLA Happy Pension",
+      category: "pension",
+      taxDeductible: true,
+      hasPromo: true,
+      benefits: [
+        { label: "บำนาญรายเดือน",        value: "ตั้งแต่อายุ 55/60 ปี" },
+        { label: "คุ้มครองชีวิต",        value: "ตลอดชีพ" },
+        { label: "ระยะชำระเบี้ย",        value: "ถึงอายุ 55 ปี" },
+        { label: "ลดหย่อนภาษี",          value: "สูงสุด 200,000 บาท/ปี" },
+        { label: "รับบำนาญ",             value: "ทุกเดือนจนถึงอายุ 85 ปี" }
+      ],
+      desc: "วางแผนเกษียณอย่างมั่นคง รับเงินบำนาญรายเดือน พร้อมลดหย่อนภาษีสูงสุดตามกฎหมาย"
+    },
+    smartreturn105: {
+      name: "BLA Smart Return 10/5",
+      category: "savings",
+      taxDeductible: false,
+      hasPromo: false,
+      benefits: [
+        { label: "ระยะคุ้มครอง",        value: "10 ปี" },
+        { label: "ระยะชำระเบี้ย",       value: "5 ปี" },
+        { label: "เงินครบสัญญา",        value: "สูงสุด 165%" },
+        { label: "ผลตอบแทนรวม",         value: "IRR ~3.1%" },
+        { label: "เหมาะกับ",            value: "การออมระยะสั้น-กลาง" }
+      ],
+      desc: "จ่ายเบี้ย 5 ปี คุ้มครองนาน 10 ปี รับเงินก้อนสูงเมื่อครบสัญญา ผลตอบแทนดีกว่าเงินฝากประจำ"
+    }
+  };
+
+  var params  = new URLSearchParams(location.search);
+  var code    = params.get("code") || "smartsaving101";
+  var p       = CATALOG_DETAIL[code] || CATALOG_DETAIL["smartsaving101"];
+  var catLabel = { savings: "ออมทรัพย์", health: "สุขภาพ", pension: "บำนาญ" };
+  var catBadge = { savings: "badge-savings", health: "badge-health", pension: "badge-pension" };
+
+  document.getElementById("bc-name").textContent = p.name;
+
+  var benefitsHtml = p.benefits.map(function(b) {
+    return '<div class="benefit-item"><strong>' + b.label + '</strong><span>' + b.value + '</span></div>';
+  }).join('');
+
+  document.getElementById("detail-card").innerHTML =
+    '<div class="product-detail-header">'
+    + '<div class="card-badges" style="margin-bottom:12px;">'
+    + '<span class="badge ' + (catBadge[p.category] || "") + '">' + (catLabel[p.category] || p.category) + '</span>'
+    + '</div>'
+    + '<h1>' + p.name + '</h1>'
+    + '<p style="opacity:0.85;margin-top:8px;">' + p.desc + '</p>'
+    + '</div>'
+    + '<div class="product-detail-body">'
+    + '<h3 style="color:var(--blue);margin-bottom:4px;">ผลประโยชน์หลัก</h3>'
+    + '<div class="benefits-grid">' + benefitsHtml + '</div>'
+    + '<div class="detail-badges">'
+    + (p.taxDeductible ? '<span class="detail-badge detail-badge-tax">🟡 ลดหย่อนภาษีได้ตามกฎหมาย</span>' : '')
+    + (p.hasPromo      ? '<span class="detail-badge detail-badge-promo">🔴 มีโปรโมชันพิเศษ</span>'        : '')
+    + '</div>'
+    + '<div class="action-bar mt-24">'
+    + '<a class="btn btn-primary btn-lg" href="calculator.html?code=' + code + '">คำนวณเบี้ยประกัน</a>'
+    + '<a class="btn btn-outline btn-lg" href="index.html">← ดูผลิตภัณฑ์อื่น</a>'
+    + '</div>'
+    + '</div>';
+</script>
+
+</body>
+</html>

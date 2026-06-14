@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ใบสมัครประกันออนไลน์ — Bangkok Life Assurance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script>
+    // ─── DataLayer: set BEFORE beacon loads ───────────────────────────────────
+    window.blaDataLayer = {
+      page: { type: "application", locale: "th" },
+      form: { step: 1, stepName: "personal" }
+    };
+  </script>
+  <!-- MCP Beacon: วาง Salesforce Interactions beacon script ที่นี่ -->
+  <!-- <script src="https://YOUR_BEACON_URL/beacon.js"></script> -->
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="logo" href="../index.html">
+      <div class="logo-mark">B</div>
+      <div>
+        <span class="logo-text">Bangkok Life</span>
+        <span class="logo-sub">Bangkok Life Assurance</span>
+      </div>
+    </a>
+    <nav>
+      <a href="../index.html">ผลิตภัณฑ์</a>
+      <a href="#">ความช่วยเหลือ</a>
+    </nav>
+  </div>
+</header>
+
+<main class="page-content">
+  <div class="container">
+
+    <div class="step-wrapper">
+
+      <!-- Step indicator -->
+      <div class="step-indicator" id="step-indicator">
+        <div class="step-item active" id="si-1">
+          <div class="step-num">1</div>
+          <div class="step-label">ข้อมูลส่วนตัว</div>
+        </div>
+        <div class="step-item" id="si-2">
+          <div class="step-num">2</div>
+          <div class="step-label">สุขภาพ</div>
+        </div>
+        <div class="step-item" id="si-3">
+          <div class="step-num">3</div>
+          <div class="step-label">ข้อมูลกรมธรรม์</div>
+        </div>
+        <div class="step-item" id="si-4">
+          <div class="step-num">4</div>
+          <div class="step-label">ตรวจสอบ</div>
+        </div>
+        <div class="step-item" id="si-5">
+          <div class="step-num">5</div>
+          <div class="step-label">ชำระเงิน</div>
+        </div>
+      </div>
+
+      <!-- Step 1: Personal Information -->
+      <div class="form-card" id="pane-1">
+        <div class="form-card-header">
+          <h2>ขั้นตอนที่ 1 — ข้อมูลส่วนตัว</h2>
+          <p>กรุณากรอกข้อมูลส่วนตัวของผู้เอาประกัน (ข้อมูลสาธิต — ไม่มีการเก็บข้อมูลจริง)</p>
+        </div>
+        <div class="form-card-body">
+          <div class="form-group">
+            <label class="form-label">คำนำหน้านาม</label>
+            <select class="form-control" id="f-title">
+              <option value="">-- เลือก --</option>
+              <option value="mr">นาย</option>
+              <option value="ms">นาง / นางสาว</option>
+            </select>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div class="form-group">
+              <label class="form-label">ชื่อ (สาธิต)</label>
+              <input type="text" class="form-control" id="f-firstname" placeholder="ชื่อ (ตัวอย่าง)">
+            </div>
+            <div class="form-group">
+              <label class="form-label">นามสกุล (สาธิต)</label>
+              <input type="text" class="form-control" id="f-lastname" placeholder="นามสกุล (ตัวอย่าง)">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">วันเกิด (สาธิต)</label>
+            <input type="date" class="form-control" id="f-dob" placeholder="วว/ดด/ปปปป">
+          </div>
+          <div class="form-group">
+            <label class="form-label">เลขบัตรประชาชน (สาธิต — ห้ามใส่เลขจริง)</label>
+            <input type="text" class="form-control" id="f-idcard" placeholder="x-xxxx-xxxxx-xx-x (ตัวอย่างเท่านั้น)" maxlength="17">
+            <small style="color:var(--text-muted);font-size:12px;">* ฟิลด์นี้เป็น placeholder สำหรับสาธิต — ไม่มีการบันทึกข้อมูลจริง</small>
+          </div>
+          <div class="form-group">
+            <label class="form-label">เบอร์โทรศัพท์ (สาธิต)</label>
+            <input type="tel" class="form-control" id="f-phone" placeholder="0xx-xxx-xxxx (ตัวอย่าง)">
+          </div>
+          <div class="form-group">
+            <label class="form-label">อีเมล (สาธิต)</label>
+            <input type="email" class="form-control" id="f-email" placeholder="example@mail.com (ตัวอย่าง)">
+          </div>
+          <div class="form-nav">
+            <a href="../calculator.html" class="btn btn-outline">← กลับ</a>
+            <button class="btn btn-primary" onclick="goToStep(2)">ต่อไป →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Health Questions -->
+      <div class="form-card hidden" id="pane-2">
+        <div class="form-card-header">
+          <h2>ขั้นตอนที่ 2 — คำถามสุขภาพ</h2>
+          <p>กรุณาตอบคำถามสุขภาพต่อไปนี้ตามความเป็นจริง (ข้อมูลสาธิต)</p>
+        </div>
+        <div class="form-card-body">
+          <div class="health-question">
+            <p>1. ในช่วง 5 ปีที่ผ่านมา คุณเคยได้รับการวินิจฉัยว่าเป็นโรคหัวใจ โรคเบาหวาน ความดันโลหิตสูง หรือโรคมะเร็งหรือไม่?</p>
+            <div class="yes-no">
+              <label><input type="radio" name="hq1" value="no" checked> ไม่เคย</label>
+              <label><input type="radio" name="hq1" value="yes"> เคย</label>
+            </div>
+          </div>
+          <div class="health-question">
+            <p>2. ในช่วง 12 เดือนที่ผ่านมา คุณเคยเข้ารับการผ่าตัดหรือนอนโรงพยาบาลหรือไม่?</p>
+            <div class="yes-no">
+              <label><input type="radio" name="hq2" value="no" checked> ไม่เคย</label>
+              <label><input type="radio" name="hq2" value="yes"> เคย</label>
+            </div>
+          </div>
+          <div class="health-question">
+            <p>3. ปัจจุบันคุณสูบบุหรี่หรือใช้ผลิตภัณฑ์ยาสูบหรือไม่?</p>
+            <div class="yes-no">
+              <label><input type="radio" name="hq3" value="no" checked> ไม่สูบ</label>
+              <label><input type="radio" name="hq3" value="yes"> สูบ</label>
+            </div>
+          </div>
+          <div class="form-nav">
+            <button class="btn btn-outline" onclick="goToStep(1)">← กลับ</button>
+            <button class="btn btn-primary" onclick="goToStep(3)">ต่อไป →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: App Info -->
+      <div class="form-card hidden" id="pane-3">
+        <div class="form-card-header">
+          <h2>ขั้นตอนที่ 3 — ข้อมูลกรมธรรม์</h2>
+          <p>ข้อมูลผู้รับประโยชน์และวันที่คุ้มครอง (ข้อมูลสาธิต)</p>
+        </div>
+        <div class="form-card-body">
+          <div class="form-group">
+            <label class="form-label">ชื่อผู้รับประโยชน์ (สาธิต)</label>
+            <input type="text" class="form-control" id="f-beneficiary" placeholder="ชื่อ-นามสกุล ผู้รับประโยชน์ (ตัวอย่าง)">
+          </div>
+          <div class="form-group">
+            <label class="form-label">ความสัมพันธ์กับผู้เอาประกัน</label>
+            <select class="form-control" id="f-relationship">
+              <option value="">-- เลือก --</option>
+              <option value="spouse">คู่สมรส</option>
+              <option value="child">บุตร</option>
+              <option value="parent">บิดา/มารดา</option>
+              <option value="sibling">พี่น้อง</option>
+              <option value="other">อื่น ๆ</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">สัดส่วนผลประโยชน์</label>
+            <select class="form-control" id="f-benefit-ratio">
+              <option value="100">100%</option>
+              <option value="50">50%</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">วันที่เริ่มคุ้มครองที่ต้องการ</label>
+            <input type="date" class="form-control" id="f-start-date">
+          </div>
+          <div class="form-nav">
+            <button class="btn btn-outline" onclick="goToStep(2)">← กลับ</button>
+            <button class="btn btn-primary" onclick="goToStep(4)">ต่อไป →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: Review -->
+      <div class="form-card hidden" id="pane-4">
+        <div class="form-card-header">
+          <h2>ขั้นตอนที่ 4 — ตรวจสอบข้อมูล</h2>
+          <p>กรุณาตรวจสอบข้อมูลก่อนดำเนินการต่อ</p>
+        </div>
+        <div class="form-card-body">
+          <h3 style="color:var(--blue);margin-bottom:12px;font-size:15px;">สรุปข้อมูลการสมัคร</h3>
+          <table class="review-table">
+            <tr><td>ผลิตภัณฑ์</td><td id="rv-product">—</td></tr>
+            <tr><td>แผน</td><td id="rv-plan">—</td></tr>
+            <tr><td>เบี้ยประกัน (ประมาณ)</td><td id="rv-premium">—</td></tr>
+            <tr><td>ช่วงอายุ</td><td id="rv-ageband">—</td></tr>
+          </table>
+          <h3 style="color:var(--blue);margin:20px 0 12px;font-size:15px;">ข้อมูลผู้เอาประกัน (ตัวอย่าง)</h3>
+          <table class="review-table">
+            <tr><td>ชื่อ-นามสกุล</td><td>ตัวอย่าง สาธิต</td></tr>
+            <tr><td>วันเกิด</td><td>01/01/2533 (ตัวอย่าง)</td></tr>
+            <tr><td>ผู้รับประโยชน์</td><td>ตัวอย่าง ผู้รับประโยชน์</td></tr>
+          </table>
+          <div style="background:#fef9c3;border:1px solid #fde68a;border-radius:var(--radius);padding:14px;font-size:13px;margin-top:20px;">
+            <strong>ข้อตกลงและเงื่อนไข (สาธิต):</strong> ข้าพเจ้ายืนยันว่าข้อมูลที่ให้ไว้เป็นความจริงทุกประการ การสาธิตนี้ไม่มีผลผูกพันทางกฎหมาย
+          </div>
+          <div class="form-nav">
+            <button class="btn btn-outline" onclick="goToStep(3)">← กลับ</button>
+            <button class="btn btn-primary" onclick="goToStep(5)">ยืนยันและชำระเงิน →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 5: Payment -->
+      <div class="form-card hidden" id="pane-5">
+        <div class="form-card-header">
+          <h2>ขั้นตอนที่ 5 — ชำระเงิน</h2>
+          <p>เลือกวิธีชำระเงิน (สาธิต — ไม่มีการชำระเงินจริง)</p>
+        </div>
+        <div class="form-card-body">
+          <div class="form-group">
+            <label class="form-label">วิธีชำระเงิน</label>
+            <select class="form-control" id="f-payment">
+              <option value="credit">บัตรเครดิต / เดบิต</option>
+              <option value="qr">QR Code (พร้อมเพย์)</option>
+              <option value="transfer">โอนเงินผ่านธนาคาร</option>
+              <option value="installment">ผ่อนชำระ 0% 10 เดือน</option>
+            </select>
+          </div>
+          <div style="background:var(--bg);border-radius:var(--radius);padding:20px;margin:16px 0;">
+            <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:14px;">
+              <span style="color:var(--text-muted);">เบี้ยประกันรายปี</span>
+              <span id="pay-premium" style="font-weight:600;">—</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:14px;">
+              <span style="color:var(--text-muted);">ภาษีมูลค่าเพิ่ม (VAT 7%)</span>
+              <span id="pay-vat" style="font-weight:600;">—</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:12px 0;font-size:16px;">
+              <span style="font-weight:700;color:var(--blue);">ยอดรวมทั้งสิ้น</span>
+              <span id="pay-total" style="font-weight:800;color:var(--blue);font-size:18px;">—</span>
+            </div>
+          </div>
+          <p style="font-size:12px;color:var(--text-muted);margin-bottom:20px;">
+            * ระบบสาธิต — ไม่มีการชำระเงินจริงเกิดขึ้น ข้อมูลทั้งหมดถูกใช้เพื่อทดสอบ MCP Tracking เท่านั้น
+          </p>
+          <div class="form-nav">
+            <button class="btn btn-outline" onclick="goToStep(4)">← กลับ</button>
+            <button class="btn btn-gold btn-lg" id="btn-submit" style="flex:1;" onclick="submitForm()">ยืนยันการสมัคร (สาธิต)</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /.step-wrapper -->
+  </div>
+</main>
+
+<footer class="site-footer">
+  <p>© 2024 Bangkok Life Assurance PCL. | <a href="#">นโยบายความเป็นส่วนตัว</a></p>
+  <p class="mt-8" style="font-size:11px;opacity:0.6;">[MOCK — BLA Funnel Demo สำหรับทดสอบ MCP Tracking เท่านั้น]</p>
+</footer>
+
+<script src="../assets/datalayer.js"></script>
+<script>
+(function () {
+  var params      = new URLSearchParams(location.search);
+  var code        = params.get("code")        || "smartsaving101";
+  var premiumBand = params.get("premiumBand") || "mid";
+  var plan        = params.get("plan")        || "standard";
+  var premium     = parseInt(params.get("premium") || "25000", 10);
+
+  var STEP_NAMES = {
+    1: "personal",
+    2: "health-questions",
+    3: "app-info",
+    4: "review",
+    5: "payment"
+  };
+
+  var PRODUCT_NAMES = {
+    smartsaving101: "BLA SmartSaving 10/1",
+    smartsaving102: "BLA SmartSaving 10/2",
+    completehealth: "BLA Complete Health",
+    fastreturn102:  "BLA Fast Return 10/2",
+    happypension:   "BLA Happy Pension",
+    smartreturn105: "BLA Smart Return 10/5"
+  };
+
+  var PLAN_LABELS = { basic: "Basic", standard: "Standard", premium: "Premium" };
+
+  var currentStep = 1;
+
+  // Pre-fill review tab values
+  document.getElementById("rv-product").textContent  = PRODUCT_NAMES[code]   || code;
+  document.getElementById("rv-plan").textContent     = PLAN_LABELS[plan]     || plan;
+  document.getElementById("rv-premium").textContent  = premium.toLocaleString("th-TH") + " บาท/ปี";
+  document.getElementById("rv-ageband").textContent  = premiumBand === "low" ? "20-29" : premiumBand === "mid" ? "30-39" : "40+";
+
+  // Pre-fill payment summary
+  var vat   = Math.round(premium * 0.07);
+  var total = premium + vat;
+  document.getElementById("pay-premium").textContent = premium.toLocaleString("th-TH") + " บาท";
+  document.getElementById("pay-vat").textContent     = vat.toLocaleString("th-TH") + " บาท";
+  document.getElementById("pay-total").textContent   = total.toLocaleString("th-TH") + " บาท";
+
+  window.goToStep = function (n) {
+    var prevStep = currentStep;
+
+    // Hide current pane
+    document.getElementById("pane-" + currentStep).classList.add("hidden");
+
+    // Update step indicators
+    var prevSI = document.getElementById("si-" + currentStep);
+    if (prevSI) {
+      prevSI.classList.remove("active");
+      if (n > prevStep) prevSI.classList.add("done");
+      else prevSI.classList.remove("done");
+    }
+
+    currentStep = n;
+
+    // Show new pane
+    document.getElementById("pane-" + n).classList.remove("hidden");
+
+    // Update step indicator
+    for (var i = 1; i <= 5; i++) {
+      var si = document.getElementById("si-" + i);
+      si.classList.remove("active", "done");
+      if (i < n) si.classList.add("done");
+      if (i === n) si.classList.add("active");
+    }
+
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    // Fire tracking
+    var stepName = STEP_NAMES[n] || "step-" + n;
+    window.blaDataLayer.page = window.blaDataLayer.page || {};
+    window.blaDataLayer.page.code = code;
+    window.blaTrack.formStep(n, stepName);
+  };
+
+  window.submitForm = function () {
+    var redirectUrl = "confirmation.html?code=" + encodeURIComponent(code) + "&value=" + encodeURIComponent(total);
+    window.location.href = redirectUrl;
+  };
+
+}());
+</script>
+
+</body>
+</html>

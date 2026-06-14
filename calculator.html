@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>คำนวณเบี้ยประกัน — Bangkok Life Assurance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+  <script>
+    // ─── DataLayer: set BEFORE beacon loads ───────────────────────────────────
+    (function() {
+      var params = new URLSearchParams(location.search);
+      var code   = params.get("code") || "smartsaving101";
+      var CATALOG = {
+        smartsaving101: { name: "BLA SmartSaving 10/1",  category: "savings" },
+        smartsaving102: { name: "BLA SmartSaving 10/2",  category: "savings" },
+        completehealth: { name: "BLA Complete Health",    category: "health"  },
+        fastreturn102:  { name: "BLA Fast Return 10/2",   category: "savings" },
+        happypension:   { name: "BLA Happy Pension",      category: "pension" },
+        smartreturn105: { name: "BLA Smart Return 10/5",  category: "savings" }
+      };
+      var p = CATALOG[code] || CATALOG["smartsaving101"];
+      window.blaDataLayer = {
+        page:    { type: "calculator", locale: "th" },
+        product: { code: code, name: p.name, category: p.category, taxDeductible: true, hasPromo: false },
+        calc:    { gender: "", ageBand: "", premiumBand: "" }
+      };
+    })();
+  </script>
+  <!-- MCP Beacon: วาง Salesforce Interactions beacon script ที่นี่ -->
+  <!-- <script src="https://YOUR_BEACON_URL/beacon.js"></script> -->
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="logo" href="index.html">
+      <div class="logo-mark">B</div>
+      <div>
+        <span class="logo-text">Bangkok Life</span>
+        <span class="logo-sub">Bangkok Life Assurance</span>
+      </div>
+    </a>
+    <nav>
+      <a href="index.html">ผลิตภัณฑ์</a>
+      <a href="#">เกี่ยวกับเรา</a>
+      <a href="#">ติดต่อ</a>
+    </nav>
+  </div>
+</header>
+
+<!-- MCP content zone: calculator_nudge -->
+<div id="mcp-calculator_nudge" data-mcp-zone="calculator_nudge"></div>
+
+<main class="page-content">
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="index.html">หน้าหลัก</a>
+      <span>›</span>
+      <a href="#" id="bc-product">ผลิตภัณฑ์</a>
+      <span>›</span>
+      <span>คำนวณเบี้ย</span>
+    </div>
+
+    <div class="calc-card">
+      <div class="calc-header">
+        <h1>คำนวณเบี้ยประกัน</h1>
+        <p id="calc-product-name" style="opacity:0.8;margin-top:4px;font-size:14px;"></p>
+      </div>
+      <div class="calc-body">
+        <div class="form-group">
+          <label class="form-label">เพศ</label>
+          <div class="radio-group">
+            <div class="radio-option">
+              <input type="radio" name="gender" id="gender-male" value="male">
+              <label for="gender-male">ชาย</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" name="gender" id="gender-female" value="female">
+              <label for="gender-female">หญิง</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="age-band">ช่วงอายุ</label>
+          <select class="form-control" id="age-band">
+            <option value="">-- เลือกช่วงอายุ --</option>
+            <option value="20-29">20–29 ปี</option>
+            <option value="30-39">30–39 ปี</option>
+            <option value="40-49">40–49 ปี</option>
+            <option value="50-59">50–59 ปี</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="plan">แผน</label>
+          <select class="form-control" id="plan">
+            <option value="">-- เลือกแผน --</option>
+            <option value="basic">แผน Basic (ทุนประกัน 500,000 บาท)</option>
+            <option value="standard">แผน Standard (ทุนประกัน 1,000,000 บาท)</option>
+            <option value="premium">แผน Premium (ทุนประกัน 2,000,000 บาท)</option>
+          </select>
+        </div>
+
+        <button class="btn btn-primary btn-lg" id="btn-calculate" style="width:100%;">คำนวณเบี้ยประกัน</button>
+
+        <div class="result-box" id="result-box">
+          <div class="result-label">เบี้ยประกันรายปีโดยประมาณ</div>
+          <div>
+            <span class="result-amount" id="result-amount">0</span>
+            <span class="result-unit">บาท / ปี</span>
+          </div>
+          <p style="font-size:12px;color:var(--text-muted);margin-top:8px;">* ราคานี้เป็นการประมาณการเบื้องต้น ราคาจริงอาจแตกต่างตามเงื่อนไขของบริษัท</p>
+
+          <div style="margin-top:24px;">
+            <button class="btn btn-gold btn-lg" id="btn-buy" style="width:100%;">ซื้อออนไลน์ →</button>
+          </div>
+        </div>
+
+        <div style="margin-top:16px;">
+          <a id="back-to-product" href="#" class="btn btn-outline" style="width:100%;text-align:center;">← กลับหน้ารายละเอียด</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <p>© 2024 Bangkok Life Assurance PCL.</p>
+  <p class="mt-8" style="font-size:11px;opacity:0.6;">[MOCK — BLA Funnel Demo สำหรับทดสอบ MCP Tracking เท่านั้น]</p>
+</footer>
+
+<script src="assets/datalayer.js"></script>
+<script>
+  var params  = new URLSearchParams(location.search);
+  var code    = params.get("code") || "smartsaving101";
+  var NAMES   = {
+    smartsaving101: "BLA SmartSaving 10/1",
+    smartsaving102: "BLA SmartSaving 10/2",
+    completehealth: "BLA Complete Health",
+    fastreturn102:  "BLA Fast Return 10/2",
+    happypension:   "BLA Happy Pension",
+    smartreturn105: "BLA Smart Return 10/5"
+  };
+  var productName = NAMES[code] || code;
+
+  document.getElementById("calc-product-name").textContent = productName;
+  document.getElementById("back-to-product").href = "product.html?code=" + code;
+  document.getElementById("bc-product").textContent = productName;
+  document.getElementById("bc-product").href = "product.html?code=" + code;
+
+  // Mock premium table: [gender][ageBand][plan]
+  var PREMIUM = {
+    male: {
+      "20-29": { basic: 12500, standard: 24800, premium: 49500 },
+      "30-39": { basic: 15200, standard: 30200, premium: 60200 },
+      "40-49": { basic: 19800, standard: 39400, premium: 78500 },
+      "50-59": { basic: 28500, standard: 56800, premium: 113400 }
+    },
+    female: {
+      "20-29": { basic: 11200, standard: 22300, premium: 44500 },
+      "30-39": { basic: 13600, standard: 27100, premium: 54100 },
+      "40-49": { basic: 17500, standard: 34900, premium: 69700 },
+      "50-59": { basic: 25100, standard: 50100, premium: 100100 }
+    }
+  };
+
+  function getPremiumBand(amount) {
+    if (amount < 15000) return "low";
+    if (amount < 40000) return "mid";
+    return "high";
+  }
+
+  var calcResult = null;
+
+  document.getElementById("btn-calculate").addEventListener("click", function() {
+    var gender  = document.querySelector('input[name="gender"]:checked');
+    var ageBand = document.getElementById("age-band").value;
+    var plan    = document.getElementById("plan").value;
+
+    if (!gender || !ageBand || !plan) {
+      alert("กรุณากรอกข้อมูลให้ครบทุกช่อง");
+      return;
+    }
+
+    var g       = gender.value;
+    var amount  = (PREMIUM[g] && PREMIUM[g][ageBand] && PREMIUM[g][ageBand][plan]) || 20000;
+    var band    = getPremiumBand(amount);
+
+    calcResult = { code: code, gender: g, ageBand: ageBand, plan: plan, premium: amount, premiumBand: band };
+
+    // Update dataLayer
+    window.blaDataLayer.calc = { gender: g, ageBand: ageBand, premiumBand: band };
+
+    // Fire tracking event
+    window.blaTrack.calculate(calcResult);
+
+    // Show result
+    document.getElementById("result-amount").textContent = amount.toLocaleString("th-TH");
+    document.getElementById("result-box").classList.add("show");
+  });
+
+  document.getElementById("btn-buy").addEventListener("click", function() {
+    if (!calcResult) return;
+
+    // Get visitor ID from MCP cookie or create mock for demo
+    var vid = "MOCK_VID_" + Math.random().toString(36).slice(2, 10);
+    try {
+      if (typeof SalesforceInteractions !== "undefined" && SalesforceInteractions.getAnonymousId) {
+        vid = SalesforceInteractions.getAnonymousId() || vid;
+      }
+    } catch(e) {}
+
+    var redirectUrl = "smartinsure/form.html?vid=" + encodeURIComponent(vid)
+      + "&code=" + encodeURIComponent(calcResult.code)
+      + "&premiumBand=" + encodeURIComponent(calcResult.premiumBand)
+      + "&plan=" + encodeURIComponent(calcResult.plan)
+      + "&premium=" + encodeURIComponent(calcResult.premium);
+
+    // Fire tracking then redirect (blaTrack.buyClick handles the redirect)
+    window.blaTrack.buyClick({ code: calcResult.code, plan: calcResult.plan, premium: calcResult.premium, premiumBand: calcResult.premiumBand, redirectUrl: redirectUrl });
+  });
+</script>
+
+</body>
+</html>

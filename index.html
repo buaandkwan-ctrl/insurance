@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ประกันชีวิตออนไลน์ — Bangkok Life Assurance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+  <script>
+    // ─── DataLayer: set BEFORE beacon loads ───────────────────────────────────
+    window.blaDataLayer = {
+      page: { type: "home", locale: "th" }
+    };
+  </script>
+  <!-- MCP Beacon: วาง Salesforce Interactions beacon script ที่นี่ -->
+  <!-- <script src="https://YOUR_BEACON_URL/beacon.js"></script> -->
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="logo" href="index.html">
+      <div class="logo-mark">B</div>
+      <div>
+        <span class="logo-text">Bangkok Life</span>
+        <span class="logo-sub">Bangkok Life Assurance</span>
+      </div>
+    </a>
+    <nav>
+      <a href="index.html">ผลิตภัณฑ์</a>
+      <a href="#">เกี่ยวกับเรา</a>
+      <a href="#">ติดต่อ</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <h1>ประกันชีวิตออนไลน์ ง่าย เร็ว คุ้มค่า</h1>
+    <p>เลือกแผนประกันที่ใช่สำหรับคุณ สมัครออนไลน์ได้ทันที ไม่ต้องง้อตัวแทน</p>
+  </div>
+</section>
+
+<!-- MCP content zone: home_hero -->
+<div id="mcp-home_hero" data-mcp-zone="home_hero"></div>
+
+<main class="page-content">
+  <div class="container">
+    <h2 class="section-title">ผลิตภัณฑ์ประกันชีวิต</h2>
+    <p class="section-sub">เลือกแผนที่เหมาะกับเป้าหมายทางการเงินของคุณ</p>
+
+    <div class="products-grid" id="products-grid">
+      <!-- Cards rendered by JS below -->
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <p>© 2024 Bangkok Life Assurance PCL. | <a href="#">นโยบายความเป็นส่วนตัว</a> | <a href="#">เงื่อนไขการใช้งาน</a></p>
+  <p class="mt-8" style="font-size:11px;opacity:0.6;">[MOCK — BLA Funnel Demo สำหรับทดสอบ MCP Tracking เท่านั้น]</p>
+</footer>
+
+<script src="assets/datalayer.js"></script>
+<script>
+  var CATALOG = [
+    {
+      code: "smartsaving101",
+      name: "BLA SmartSaving 10/1",
+      category: "savings",
+      taxDeductible: true,
+      hasPromo: true,
+      highlights: ["คุ้มครองชีวิต 10 ปี", "ออมทรัพย์พร้อมรับเงินคืน", "ลดหย่อนภาษีได้ตามกฎหมาย", "โปรโมชันพิเศษสมัครวันนี้"]
+    },
+    {
+      code: "smartsaving102",
+      name: "BLA SmartSaving 10/2",
+      category: "savings",
+      taxDeductible: true,
+      hasPromo: false,
+      highlights: ["คุ้มครองชีวิต 10 ปี", "รับเงินคืนรายปี", "ลดหย่อนภาษีได้ตามกฎหมาย", "เบี้ยประกันคงที่ตลอดสัญญา"]
+    },
+    {
+      code: "completehealth",
+      name: "BLA Complete Health",
+      category: "health",
+      taxDeductible: false,
+      hasPromo: true,
+      highlights: ["ค่ารักษาพยาบาลผู้ป่วยใน", "คุ้มครองโรคร้ายแรง 50+ โรค", "ไม่ต้องสำรองจ่าย (เครือข่ายพยาบาล)", "โปรโมชันพิเศษสมัครวันนี้"]
+    },
+    {
+      code: "fastreturn102",
+      name: "BLA Fast Return 10/2",
+      category: "savings",
+      taxDeductible: true,
+      hasPromo: false,
+      highlights: ["รับเงินคืนเร็วตั้งแต่ปีที่ 1", "คุ้มครองชีวิตสูงสุด 200%", "ลดหย่อนภาษีได้ตามกฎหมาย", "ผลตอบแทนสูงกว่าฝากประจำ"]
+    },
+    {
+      code: "happypension",
+      name: "BLA Happy Pension",
+      category: "pension",
+      taxDeductible: true,
+      hasPromo: true,
+      highlights: ["รับบำนาญทุกเดือนหลังเกษียณ", "ลดหย่อนภาษีได้ตามกฎหมาย", "คุ้มครองตลอดชีพ", "โปรโมชันพิเศษสมัครวันนี้"]
+    },
+    {
+      code: "smartreturn105",
+      name: "BLA Smart Return 10/5",
+      category: "savings",
+      taxDeductible: false,
+      hasPromo: false,
+      highlights: ["จ่ายเบี้ย 5 ปี คุ้มครอง 10 ปี", "รับเงินก้อนเมื่อครบสัญญา", "ผลตอบแทนสูง", "เหมาะกับการวางแผนระยะสั้น"]
+    }
+  ];
+
+  var categoryLabel = { savings: "ออมทรัพย์", health: "สุขภาพ", pension: "บำนาญ" };
+  var categoryBadgeClass = { savings: "badge-savings", health: "badge-health", pension: "badge-pension" };
+
+  var grid = document.getElementById("products-grid");
+  CATALOG.forEach(function(p) {
+    var badgesHtml = '<div class="card-badges">'
+      + '<span class="badge ' + (categoryBadgeClass[p.category] || "badge-savings") + '">' + (categoryLabel[p.category] || p.category) + '</span>'
+      + (p.taxDeductible ? '<span class="badge badge-tax">ลดหย่อนภาษี</span>' : '')
+      + (p.hasPromo      ? '<span class="badge badge-promo">โปรโมชัน</span>'   : '')
+      + '</div>';
+
+    var hiHtml = p.highlights.map(function(h){ return '<li>' + h + '</li>'; }).join('');
+
+    grid.innerHTML += '<div class="product-card">'
+      + '<div class="card-header">'
+      + '<div class="card-category">' + (categoryLabel[p.category] || p.category) + '</div>'
+      + '<div class="card-title">' + p.name + '</div>'
+      + badgesHtml
+      + '</div>'
+      + '<div class="card-body">'
+      + '<ul class="card-highlights">' + hiHtml + '</ul>'
+      + '<a class="btn btn-primary" href="product.html?code=' + p.code + '">ดูรายละเอียด</a>'
+      + '</div>'
+      + '</div>';
+  });
+</script>
+
+</body>
+</html>

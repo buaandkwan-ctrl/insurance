@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ยืนยันการสมัคร — Bangkok Life Assurance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script>
+    // ─── DataLayer: set BEFORE beacon loads ───────────────────────────────────
+    (function () {
+      var params = new URLSearchParams(location.search);
+      var code   = params.get("code")  || "";
+      var value  = parseInt(params.get("value") || "5000", 10);
+      window.blaDataLayer = {
+        page:  { type: "confirmation", locale: "th" },
+        order: { confirmed: true, value: value, code: code }
+      };
+    }());
+  </script>
+  <!-- MCP Beacon: วาง Salesforce Interactions beacon script ที่นี่ -->
+  <!-- <script src="https://YOUR_BEACON_URL/beacon.js"></script> -->
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="logo" href="../index.html">
+      <div class="logo-mark">B</div>
+      <div>
+        <span class="logo-text">Bangkok Life</span>
+        <span class="logo-sub">Bangkok Life Assurance</span>
+      </div>
+    </a>
+    <nav>
+      <a href="../index.html">หน้าหลัก</a>
+      <a href="#">ความช่วยเหลือ</a>
+    </nav>
+  </div>
+</header>
+
+<main class="page-content">
+  <div class="container">
+
+    <div class="confirm-card">
+      <div class="confirm-header">
+        <div class="confirm-icon">✓</div>
+        <h1>สมัครประกันสำเร็จ!</h1>
+        <p>ขอบคุณที่ไว้วางใจ Bangkok Life Assurance</p>
+      </div>
+      <div class="confirm-body">
+        <p style="color:var(--text-muted);font-size:14px;">หมายเลขคำขอ (สาธิต)</p>
+        <div class="order-number" id="order-number">BLA-XXXXXXXX</div>
+
+        <div class="confirm-detail">
+          <div class="confirm-row">
+            <span>ผลิตภัณฑ์</span>
+            <span id="conf-product">—</span>
+          </div>
+          <div class="confirm-row">
+            <span>เบี้ยประกัน</span>
+            <span id="conf-value">—</span>
+          </div>
+          <div class="confirm-row">
+            <span>วันที่สมัคร</span>
+            <span id="conf-date">—</span>
+          </div>
+          <div class="confirm-row">
+            <span>สถานะ</span>
+            <span style="color:var(--success);font-weight:700;">อยู่ระหว่างพิจารณา</span>
+          </div>
+          <div class="confirm-row">
+            <span>ช่องทางแจ้งผล</span>
+            <span>อีเมล / SMS (สาธิต)</span>
+          </div>
+        </div>
+
+        <div style="background:#e8f5e9;border-radius:var(--radius);padding:16px;font-size:13px;color:#1b5e20;margin-bottom:24px;">
+          <strong>ขั้นตอนต่อไป:</strong> ทีมงานจะตรวจสอบใบสมัครและส่งกรมธรรม์ให้ภายใน 3-5 วันทำการ
+          (ระบบสาธิต — ไม่มีการดำเนินการจริง)
+        </div>
+
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+          <a href="../index.html" class="btn btn-primary">ดูผลิตภัณฑ์อื่น</a>
+          <a href="#" class="btn btn-outline" onclick="window.print();return false;">พิมพ์ใบยืนยัน</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <p>© 2024 Bangkok Life Assurance PCL. | <a href="#">นโยบายความเป็นส่วนตัว</a></p>
+  <p class="mt-8" style="font-size:11px;opacity:0.6;">[MOCK — BLA Funnel Demo สำหรับทดสอบ MCP Tracking เท่านั้น]</p>
+</footer>
+
+<script src="../assets/datalayer.js"></script>
+<script>
+(function () {
+  var params = new URLSearchParams(location.search);
+  var code   = params.get("code")  || "smartsaving101";
+  var value  = parseInt(params.get("value") || "5000", 10);
+
+  var PRODUCT_NAMES = {
+    smartsaving101: "BLA SmartSaving 10/1",
+    smartsaving102: "BLA SmartSaving 10/2",
+    completehealth: "BLA Complete Health",
+    fastreturn102:  "BLA Fast Return 10/2",
+    happypension:   "BLA Happy Pension",
+    smartreturn105: "BLA Smart Return 10/5"
+  };
+
+  // Generate a mock order number
+  var orderNum = "BLA-" + Date.now().toString(36).toUpperCase().slice(-8);
+  document.getElementById("order-number").textContent = orderNum;
+
+  // Fill confirmation details
+  document.getElementById("conf-product").textContent = PRODUCT_NAMES[code] || code;
+  document.getElementById("conf-value").textContent   = value.toLocaleString("th-TH") + " บาท/ปี";
+  document.getElementById("conf-date").textContent    = new Date().toLocaleDateString("th-TH", {
+    year: "numeric", month: "long", day: "numeric"
+  });
+
+  // Fire purchase tracking event on page load
+  window.addEventListener("DOMContentLoaded", function () {
+    window.blaTrack.purchase({ code: code, value: value });
+  });
+}());
+</script>
+
+</body>
+</html>

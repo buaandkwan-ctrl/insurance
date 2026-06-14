@@ -23,8 +23,10 @@
     }
     window._blaAnonId = id;
     window.Evergage = window.Evergage || {};
-    window.Evergage.init = window.Evergage.init || {};
     window.Evergage.userId = id;
+    window.Evergage.userAttribute = { customerId: id };
+    window.SalesforceInteractions = window.SalesforceInteractions || {};
+    window.SalesforceInteractions.userId = id;
   })();
   </script>
   <script type="text/javascript" src="//cdn.evgnet.com/beacon/k5568l55556r3k93qn3n3n3x091553686/bla/scripts/evergage.min.js"></script>
